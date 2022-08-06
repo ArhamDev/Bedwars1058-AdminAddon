@@ -8,8 +8,10 @@ import me.zuyte.admin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class forcejoin extends SubCommand {
@@ -49,12 +51,41 @@ public class forcejoin extends SubCommand {
             }
                 p.sendMessage(ChatColor.RED + "Usage: /bw forcejoin <player> <arena>");
         }
+        if (commandSender instanceof ConsoleCommandSender){
+            ConsoleCommandSender c = (ConsoleCommandSender) commandSender;
+            if (args.length > 0) {
+                Player player = Bukkit.getPlayerExact(args[0]);
+                if (player == null) {
+                    c.sendMessage(ChatColor.RED + "Player not found");
+                    return true;
+                }
+                if (args.length >= 2) {
+                    String arenaWorld = args[1];
+                    if (arenaUtil.getArenaByName(arenaWorld) == null) {
+                        c.sendMessage(ChatColor.RED + "Arena not found");
+                        return true;
+                    } else {
+                        IArena arena = arenaUtil.getArenaByName(arenaWorld);
+                        arena.addPlayer(player, true);
+                        c.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aForce joined " + player.getName() + " to " + arenaWorld));
+                        return true;
+                    }
+                }
+            }
+            c.sendMessage(ChatColor.RED + "Usage: /bw forcejoin <player> <arena>");
+        }
         return true;
     }
 
     @Override
     public List<String> getTabComplete() {
-        return null;
+        List<String> playerNames = new ArrayList<>();
+        Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
+        Bukkit.getServer().getOnlinePlayers().toArray(players);
+        for (int i = 0; i < players.length; i++) {
+            playerNames.add(players[i].getName());
+        }
+        return playerNames;
     }
 
 }

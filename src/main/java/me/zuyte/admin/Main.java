@@ -4,6 +4,8 @@ import com.andrei1058.bedwars.api.BedWars;
 import me.zuyte.admin.commands.*;
 import me.zuyte.admin.events.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,13 +20,12 @@ public final class Main extends JavaPlugin {
     public Map<String, String> temp = new HashMap<String, String>();
     public Map<String, ItemStack> mlg = new HashMap<String, ItemStack>();
     public Map<String, String> kaboom = new HashMap<String, String>();
-
-    public Map<String, String> toystick = new HashMap<String, String>();
-
+    public Map<String, BlockFace> beds = new HashMap<String, BlockFace>();
     @Override
     public void onEnable() {
         if (Bukkit.getPluginManager().getPlugin("BedWars1058") != null) {
             instance = this;
+            getLogger().info(ChatColor.translateAlternateColorCodes('&',"&fFound Bedwars1058 & hooked into."));
             setup();
         } else {
             getLogger().severe("BedWars1058 was not found. Disabling...");
@@ -37,13 +38,18 @@ public final class Main extends JavaPlugin {
         bw = Bukkit.getServicesManager().getRegistration(BedWars.class).getProvider();
         new admin(bw.getBedWarsCommand(), "admin");
         new forcejoin(bw.getBedWarsCommand(), "forcejoin");
-        new setteam(bw.getBedWarsCommand(), "setteam");
         new setbed(bw.getBedWarsCommand(), "setbed");
         new skipevent(bw.getBedWarsCommand(), "skipevent");
         new nextevent(bw.getBedWarsCommand(), "nextevent");
         new troll(bw.getBedWarsCommand(), "troll");
         new revive(bw.getBedWarsCommand(), "revive");
-        getServer().getPluginManager().registerEvents(new Teamselect(), this);
+        new setteam(bw.getBedWarsCommand(), "setteam");
+        if (Bukkit.getPluginManager().getPlugin("BedWars1058-TeamSelector") == null) {
+            getLogger().info(ChatColor.YELLOW + "Bedwars1058-TeamSelector Plugin was not found.");
+        } else {
+            getServer().getPluginManager().registerEvents(new Teamselect(), this);
+            getLogger().info(ChatColor.translateAlternateColorCodes('&', "&fFound Bedwars1058-TeamSelector & hooked into."));
+        }
         getServer().getPluginManager().registerEvents(new Assignevent(), this);
         getServer().getPluginManager().registerEvents(new Arenastart(), this);
         getServer().getPluginManager().registerEvents(new Arenaleave(), this);
@@ -51,6 +57,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new WBPlace(), this);
         getServer().getPluginManager().registerEvents(new Damage(), this);
         getServer().getPluginManager().registerEvents(new ClickEvent(), this);
+        getServer().getPluginManager().registerEvents(new GUIListener() , this);
+        getLogger().info(ChatColor.translateAlternateColorCodes('&',"&aRunning Bedwars1058-AdminAddon &fv" + getDescription().getVersion() + " &7- &eBy Zuyte"));
     }
 
     public static Main getInstance(){

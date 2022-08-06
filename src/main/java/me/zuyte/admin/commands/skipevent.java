@@ -8,8 +8,10 @@ import com.andrei1058.bedwars.api.command.SubCommand;
 import me.zuyte.admin.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class skipevent extends SubCommand {
@@ -56,12 +58,47 @@ public class skipevent extends SubCommand {
                 }
             p.sendMessage(ChatColor.RED + "Usage: /bw skipevent <arena>");
         }
+        if (commandSender instanceof ConsoleCommandSender) {
+            ConsoleCommandSender c = (ConsoleCommandSender) commandSender;
+                if (args.length > 0) {
+                    if (arenaUtil.getArenaByName(args[0]) == null) {
+                        c.sendMessage(ChatColor.RED + "Arena not found");
+                        return true;
+                    }
+                    IArena arena = arenaUtil.getArenaByName(args[0]);
+                    if (arena.getNextEvent().equals(NextEvent.DIAMOND_GENERATOR_TIER_II)) {
+                        arena.setNextEvent(NextEvent.DIAMOND_GENERATOR_TIER_III);
+                    } else if (arena.getNextEvent().equals(NextEvent.DIAMOND_GENERATOR_TIER_III)) {
+                        arena.setNextEvent(NextEvent.EMERALD_GENERATOR_TIER_II);
+                    } else if (arena.getNextEvent().equals(NextEvent.EMERALD_GENERATOR_TIER_II)) {
+                        arena.setNextEvent(NextEvent.EMERALD_GENERATOR_TIER_III);
+                    } else if (arena.getNextEvent().equals(NextEvent.EMERALD_GENERATOR_TIER_III)) {
+                        arena.setNextEvent(NextEvent.BEDS_DESTROY);
+                    } else if (arena.getNextEvent().equals(NextEvent.BEDS_DESTROY)) {
+                        arena.setNextEvent(NextEvent.ENDER_DRAGON);
+                    } else if (arena.getNextEvent().equals(NextEvent.ENDER_DRAGON)) {
+                        arena.setNextEvent(NextEvent.GAME_END);
+                    } else if (arena.getNextEvent().equals(NextEvent.GAME_END)) {
+                        c.sendMessage((ChatColor.RED + "You are already at the last event"));
+                        return true;
+                    }
+                    c.sendMessage(ChatColor.GREEN + "Current event has been skipped!");
+                    return true;
+                }
+                c.sendMessage(ChatColor.RED + "Usage: /bw skipevent <arena>");
+            }
         return true;
     }
 
     @Override
     public List<String> getTabComplete() {
-        return null;
+        List<String> arenaNames = new ArrayList<>();
+        IArena[] arenas = new IArena[Main.getInstance().bw.getArenaUtil().getArenas().size()];
+        Main.getInstance().bw.getArenaUtil().getArenas().toArray(arenas);
+        for (int i = 0; i < arenas.length; i++) {
+            arenaNames.add(arenas[i].getArenaName());
+        }
+        return arenaNames;
     }
 
 }

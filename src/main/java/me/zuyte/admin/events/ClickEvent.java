@@ -14,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -26,19 +25,22 @@ public class ClickEvent implements Listener {
         if (e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (e.hasItem() == true) {
             if (e.getItem().getType() == Material.STICK) {
-                e.getPlayer().sendMessage(e.getPlayer().getItemInHand().getItemMeta().getDisplayName());
             if (e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.AQUA + "Magic Toy Stick") && e.getPlayer().getItemInHand().containsEnchantment(Enchantment.LURE)) {
                 Block clickedBlock = e.getClickedBlock();
                 List<Block> blocks = getBlocks.put(clickedBlock.getLocation(), 4, false);
                 for (Block block : blocks) {
-                    if (!block.getType().equals(Material.AIR)) {
+                    if (!block.getType().equals(Material.AIR) || !block.getType().equals(Material.BED)) {
                         launchBlocks.put(block);
                     }
+                    e.getPlayer().getItemInHand().setType(Material.AIR);
                     Location location = e.getPlayer().getLocation();
+                    try{
                     e.getPlayer().setVelocity(new Vector(0, 10, 0));
-                    TNTPrimed tnt1 = (TNTPrimed)e.getPlayer().getWorld().spawnEntity(location, EntityType.PRIMED_TNT);
-                    tnt1.setFuseTicks(0);
-                    Main.getInstance().toystick.put(e.getPlayer().getName(), "true");
+                    } catch ( Exception ex ) {
+                        Main.getInstance().getLogger().severe("An exception occurred while setting player velocity.");
+                    }
+
+                    e.getPlayer().getWorld().createExplosion(location, -1, false);
                         }
                     }
                 }

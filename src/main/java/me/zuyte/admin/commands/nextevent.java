@@ -6,10 +6,14 @@ import com.andrei1058.bedwars.api.arena.NextEvent;
 import com.andrei1058.bedwars.api.command.ParentCommand;
 import com.andrei1058.bedwars.api.command.SubCommand;
 import me.zuyte.admin.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class nextevent extends SubCommand {
@@ -55,14 +59,44 @@ public class nextevent extends SubCommand {
                     return true;
                 }
             }
-            p.sendMessage(ChatColor.RED + "Usage: /bw nextevent <arena>");
+            p.sendMessage(ChatColor.RED + "Usage: /bw nextevent <arena> <event>");
+        }
+        if (commandSender instanceof ConsoleCommandSender){
+            ConsoleCommandSender c = (ConsoleCommandSender) commandSender;
+            if (args.length > 0) {
+                if (arenaUtil.getArenaByName(args[0]) == null) {
+                    c.sendMessage(ChatColor.RED + "Arena not found");
+                    return true;
+                }
+                IArena arena = arenaUtil.getArenaByName(args[0]);
+                if (args.length >= 2) {
+                    if (args[1].equalsIgnoreCase("diamond-2")) {
+                        arena.setNextEvent(NextEvent.DIAMOND_GENERATOR_TIER_II);
+                    } else if (args[1].equalsIgnoreCase("diamond-3")) {
+                        arena.setNextEvent(NextEvent.DIAMOND_GENERATOR_TIER_III);
+                    } else if (args[1].equalsIgnoreCase("emerald-2")) {
+                        arena.setNextEvent(NextEvent.EMERALD_GENERATOR_TIER_II);
+                    } else if (args[1].equalsIgnoreCase("emerald-3")) {
+                        arena.setNextEvent(NextEvent.EMERALD_GENERATOR_TIER_III);
+                    } else if (args[1].equalsIgnoreCase("bed-destroy")) {
+                        arena.setNextEvent(NextEvent.BEDS_DESTROY);
+                    } else if (args[1].equalsIgnoreCase("dragon")) {
+                        arena.setNextEvent(NextEvent.ENDER_DRAGON);
+                    } else if (args[1].equalsIgnoreCase("end")) {
+                        arena.setNextEvent(NextEvent.GAME_END);
+                    }
+                    c.sendMessage(ChatColor.GREEN + "Success!");
+                    return true;
+                }
+            }
+            c.sendMessage(ChatColor.RED + "Usage: /bw nextevent <arena> <event>");
         }
         return true;
     }
 
     @Override
     public List<String> getTabComplete() {
-        return null;
+        return Arrays.asList("diamond-2", "diamond-3", "emerald-2", "emerald-3", "bed-destroy", "dragon", "end");
     }
 
 }

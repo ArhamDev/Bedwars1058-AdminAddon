@@ -23,8 +23,5 @@ public class Arenaleave implements Listener {
         if (Main.getInstance().kaboom.containsKey(e.getPlayer().getName())) {
             Main.getInstance().kaboom.remove(e.getPlayer().getName());
         }
-        if (Main.getInstance().toystick.containsKey(e.getPlayer().getName())) {
-            Main.getInstance().toystick.remove(e.getPlayer().getName());
-        }
     }
 }
