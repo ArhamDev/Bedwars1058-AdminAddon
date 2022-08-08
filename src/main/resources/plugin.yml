@@ -5,6 +5,9 @@ api-version: "1.13"
 softdepend: [ Bedwars1058,Bedwars1058-TeamSelector ]
 authors: [ Zuyte ]
 description: Admin features to bedwars1058!
+commands:
+  bwa:
+    description: bedwars1058 admin commands
 permissions:
   bw.admin:
     description: Permission for /bw admin command.

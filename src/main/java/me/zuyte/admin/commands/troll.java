@@ -2,11 +2,8 @@ package me.zuyte.admin.commands;
 
 import com.andrei1058.bedwars.api.BedWars;
 import com.andrei1058.bedwars.api.arena.IArena;
-import com.andrei1058.bedwars.api.command.ParentCommand;
-import com.andrei1058.bedwars.api.command.SubCommand;
 import me.zuyte.admin.Main;
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -18,37 +15,28 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class troll extends SubCommand {
+public class troll{
 
     BedWars.ArenaUtil arenaUtil = Main.getInstance().bw.getArenaUtil();
 
-    public troll(ParentCommand parent, String name) {
-        super(parent, name);
-        showInList(false);
-        setPriority(20);
-        setArenaSetupCommand(false);
-        setPermission("bw.admin.troll");
-    }
-
-    @Override
-    public boolean execute(String[] args, CommandSender commandSender) {
-        if (commandSender instanceof Player) {
-            Player p = (Player) commandSender;
-            if (!p.hasPermission("bw.admin.troll")) return false;
-            if (args.length > 0) {
-                if (args[0].equalsIgnoreCase("mlg")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
+    public void player(Player p, String[] args) {
+            if (!p.hasPermission("bw.admin.troll")) {
+                p.sendMessage(ChatColor.RED + "You dont have permission to use this command.");
+                return;
+            }
+            if (args.length > 1) {
+                if (args[1].equalsIgnoreCase("mlg")) {
+                    if (args.length >= 3) {
+                        Player player = Bukkit.getPlayerExact(args[2]);
                         if (player == null) {
                             p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
+                            return;
                         }
                         if (!arenaUtil.isPlaying(player)) {
                             p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
+                            return;
                         }
                         Location playerLoc = player.getLocation();
                         playerLoc.setY(playerLoc.getY()+50);
@@ -58,19 +46,19 @@ public class troll extends SubCommand {
                         Main.getInstance().mlg.put(player.getName(), player.getItemInHand());
                         player.setItemInHand(new ItemStack(Material.WATER_BUCKET));
                         player.sendMessage(ChatColor.AQUA + "MLG TIME!!");
-                        return true;
+                        return;
                     }
                 }
-                if (args[0].equalsIgnoreCase("cage")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
+                if (args[1].equalsIgnoreCase("cage")) {
+                    if (args.length >= 3) {
+                        Player player = Bukkit.getPlayerExact(args[2]);
                         if (player == null) {
                             p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
+                            return;
                         }
                         if (!arenaUtil.isPlaying(player)) {
                             p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
+                            return;
                         }
                         IArena playerArena = arenaUtil.getArenaByPlayer(player);
                         int x = player.getLocation().getBlockX();
@@ -117,70 +105,70 @@ public class troll extends SubCommand {
                             player.getWorld().getBlockAt(x-1, y+1, z).setType(Material.GLASS);
                             playerArena.addPlacedBlock(player.getWorld().getBlockAt(x-1, y+1, z));
                         }
-                        p.sendMessage(ChatColor.LIGHT_PURPLE + "Trapped " + args[1]);
-                        return true;
+                        p.sendMessage(ChatColor.LIGHT_PURPLE + "Trapped " + args[2]);
+                        return;
                     }
                 }
-                if (args[0].equalsIgnoreCase("blind")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
+                if (args[1].equalsIgnoreCase("blind")) {
+                    if (args.length >= 3) {
+                        Player player = Bukkit.getPlayerExact(args[2]);
                         if (player == null) {
                             p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
+                            return;
                         }
                         if (!arenaUtil.isPlaying(player)) {
                             p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
+                            return;
                         }
-                        if (args.length >= 3) {
+                        if (args.length >= 4) {
                             try {
-                                Integer.parseInt(args[2]);
+                                Integer.parseInt(args[3]);
                             } catch (NumberFormatException nfe) {
                                 p.sendMessage(ChatColor.RED + "Please enter a number.");
-                                return true;
+                                return;
                             }
-                            int duration = Integer.parseInt(args[2]);
+                            int duration = Integer.parseInt(args[3]);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration*20, 1));
-                            p.sendMessage(ChatColor.RED + args[1] + " is blinded for " + args[2] + " seconds");
-                            return true;
+                            p.sendMessage(ChatColor.RED + args[2] + " is blinded for " + args[3] + " seconds");
+                            return;
                         }
                     }
                 }
-                if (args[0].equalsIgnoreCase("slowhands")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
+                if (args[1].equalsIgnoreCase("slowhands")) {
+                    if (args.length >= 3) {
+                        Player player = Bukkit.getPlayerExact(args[2]);
                         if (player == null) {
                             p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
+                            return;
                         }
                         if (!arenaUtil.isPlaying(player)) {
                             p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
+                            return;
                         }
-                        if (args.length >= 3) {
+                        if (args.length >= 4) {
                             try {
-                                Integer.parseInt(args[2]);
+                                Integer.parseInt(args[3]);
                             } catch (NumberFormatException nfe) {
                                 p.sendMessage(ChatColor.RED + "Please enter a number.");
-                                return true;
+                                return;
                             }
-                            int duration = Integer.parseInt(args[2]);
+                            int duration = Integer.parseInt(args[3]);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, duration*20, 1));
-                            p.sendMessage(ChatColor.RED + args[1] + " has slowhands for " + args[2] + " seconds");
-                            return true;
+                            p.sendMessage(ChatColor.RED + args[2] + " has slowhands for " + args[3] + " seconds");
+                            return;
                         }
                     }
                 }
-                if (args[0].equalsIgnoreCase("kaboom")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
+                if (args[1].equalsIgnoreCase("kaboom")) {
+                    if (args.length >= 3) {
+                        Player player = Bukkit.getPlayerExact(args[2]);
                         if (player == null) {
                             p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
+                            return;
                         }
                         if (!arenaUtil.isPlaying(player)) {
                             p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
+                            return;
                         }
                         Main.getInstance().kaboom.put(player.getDisplayName(), "true");
                         Location playerLocation = player.getLocation();
@@ -196,19 +184,102 @@ public class troll extends SubCommand {
                         player.getWorld().strikeLightningEffect(playerLocation);
                         player.getWorld().strikeLightningEffect(playerLocation);
                         player.getWorld().strikeLightningEffect(playerLocation);
-                        return true;
+                        return;
                     }
                 }
-                if (args[0].equalsIgnoreCase("toystick")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
+                if (args[1].equalsIgnoreCase("ghast")) {
+                    if (args.length >= 3) {
+                        Player player = Bukkit.getPlayerExact(args[2]);
                         if (player == null) {
                             p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
+                            return;
                         }
                         if (!arenaUtil.isPlaying(player)) {
                             p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
+                            return;
+                        }
+                        player.getWorld().setGameRuleValue("doFireTick", "false");
+                        player.getWorld().setGameRuleValue("doMobLoot", "false");
+                        player.getWorld().spawnEntity(player.getLocation(), EntityType.GHAST);
+                        p.sendMessage(ChatColor.RED + "Summoned Ghast at " + args[2]);
+                        return;
+                    }
+                }
+                if (args[1].equalsIgnoreCase("mobattack")) {
+                    if (args.length >= 3) {
+                        Player player = Bukkit.getPlayerExact(args[2]);
+                        if (player == null) {
+                            p.sendMessage(ChatColor.RED + "Player not found");
+                            return;
+                        }
+                        if (!arenaUtil.isPlaying(player)) {
+                            p.sendMessage(ChatColor.RED + "Player is not playing");
+                            return;
+                        }
+                        // 1st zombie
+                        player.getWorld().setGameRuleValue("doMobLoot", "false");
+                        Entity zombie = player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+                        LivingEntity livingZombie = (LivingEntity) zombie;
+                        livingZombie.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                        livingZombie.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                        livingZombie.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                        livingZombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                        livingZombie.getEquipment().setHelmetDropChance(0);
+                        livingZombie.getEquipment().setChestplateDropChance(0);
+                        livingZombie.getEquipment().setLeggingsDropChance(0);
+                        livingZombie.getEquipment().setBootsDropChance(0);
+                        livingZombie.setCustomName(ChatColor.RED + player.getName() + "'s Enemy!");
+                        // 2nd zombie
+                        Entity zombie1 = player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+                        LivingEntity livingZombie1 = (LivingEntity) zombie1;
+                        livingZombie1.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                        livingZombie1.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                        livingZombie1.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                        livingZombie1.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                        livingZombie1.getEquipment().setHelmetDropChance(0);
+                        livingZombie1.getEquipment().setChestplateDropChance(0);
+                        livingZombie1.getEquipment().setLeggingsDropChance(0);
+                        livingZombie1.getEquipment().setBootsDropChance(0);
+                        livingZombie1.setCustomName(ChatColor.RED + player.getName() + "'s Enemy!");
+                        // 1st skeleton
+                        Entity skeleton = player.getWorld().spawnEntity(player.getLocation(), EntityType.SKELETON);
+                        LivingEntity livingSkeleton = (LivingEntity) skeleton;
+                        livingSkeleton.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                        livingSkeleton.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                        livingSkeleton.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                        livingSkeleton.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                        livingSkeleton.getEquipment().setHelmetDropChance(0);
+                        livingSkeleton.getEquipment().setChestplateDropChance(0);
+                        livingSkeleton.getEquipment().setLeggingsDropChance(0);
+                        livingSkeleton.getEquipment().setBootsDropChance(0);
+                        livingSkeleton.setCustomName(ChatColor.RED + player.getName() + "'s Enemy!");
+                        // 2nd skeleton
+                        Entity skeleton1 = player.getWorld().spawnEntity(player.getLocation(), EntityType.SKELETON);
+                        LivingEntity livingSkeleton1 = (LivingEntity) skeleton1;
+                        livingSkeleton1.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                        livingSkeleton1.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                        livingSkeleton1.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                        livingSkeleton1.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                        livingSkeleton1.getEquipment().setHelmetDropChance(0);
+                        livingSkeleton1.getEquipment().setChestplateDropChance(0);
+                        livingSkeleton1.getEquipment().setLeggingsDropChance(0);
+                        livingSkeleton1.getEquipment().setBootsDropChance(0);
+                        livingSkeleton1.setCustomName(ChatColor.RED + player.getName() + "'s Enemy!");
+                        // done
+                        p.sendMessage(ChatColor.RED + "Summoned Zombies & Skeletons at " + args[2]);
+                        return;
+                    }
+                }
+                if (args[1].equalsIgnoreCase("toystick")) {
+                    if (args.length >= 3) {
+                        Player player = Bukkit.getPlayerExact(args[2]);
+                        if (player == null) {
+                            p.sendMessage(ChatColor.RED + "Player not found");
+                            return;
+                        }
+                        if (!arenaUtil.isPlaying(player)) {
+                            p.sendMessage(ChatColor.RED + "Player is not playing");
+                            return;
                         }
                         ItemStack toyStick = new ItemStack(Material.STICK, 1);
                         toyStick.addUnsafeEnchantment(Enchantment.LURE, 1);
@@ -220,213 +291,299 @@ public class troll extends SubCommand {
                         meta.setLore(loreList);
                         toyStick.setItemMeta(meta);
                         player.getInventory().addItem(toyStick);
-                        p.sendMessage(ChatColor.GREEN + "Gave " + args[1] + " a toystick!");
-                        return true;
+                        p.sendMessage(ChatColor.GREEN + "Gave " + args[2] + " a toystick!");
+                        return;
                     }
                 }
-                p.sendMessage(ChatColor.RED + "Invalid Usage.");
-                return true;
+                if (args[1].equalsIgnoreCase("mlg") || args[1].equalsIgnoreCase("cage") || args[1].equalsIgnoreCase("kaboom") || args[1].equalsIgnoreCase("toystick") || args[1].equalsIgnoreCase("ghast") || args[1].equalsIgnoreCase("mobattack")) {
+                 p.sendMessage(ChatColor.RED + "Usage: /bwa troll " + args[1].toLowerCase() + " <player>");
+                 return;
+                } else if (args[1].equalsIgnoreCase("blind") || args[1].equalsIgnoreCase("slowhands")) {
+                    p.sendMessage(ChatColor.RED + "Usage: /bwa troll " + args[1].toLowerCase() + " <player> <seconds>");
+                return;
+                }
+                p.sendMessage(ChatColor.RED + "Unknown troll command.");
             }
         }
-        if (commandSender instanceof ConsoleCommandSender) {
-            ConsoleCommandSender p = (ConsoleCommandSender) commandSender;
-            if (args.length > 0) {
-                if (args[0].equalsIgnoreCase("mlg")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
-                        if (player == null) {
-                            p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
-                        }
-                        if (!arenaUtil.isPlaying(player)) {
-                            p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
-                        }
-                        Location playerLoc = player.getLocation();
-                        playerLoc.setY(playerLoc.getY()+50);
-                        playerLoc.setPitch(90);
-                        playerLoc.setYaw(-90);
-                        player.teleport(playerLoc);
-                        Main.getInstance().mlg.put(player.getName(), player.getItemInHand());
-                        player.setItemInHand(new ItemStack(Material.WATER_BUCKET));
-                        player.sendMessage(ChatColor.AQUA + "MLG TIME!!");
-                        return true;
+
+    public void console(ConsoleCommandSender p, String[] args) {
+        if (args.length > 1) {
+            if (args[1].equalsIgnoreCase("mlg")) {
+                if (args.length >= 3) {
+                    Player player = Bukkit.getPlayerExact(args[2]);
+                    if (player == null) {
+                        p.sendMessage(ChatColor.RED + "Player not found");
+                        return;
                     }
-                }
-                if (args[0].equalsIgnoreCase("cage")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
-                        if (player == null) {
-                            p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
-                        }
-                        if (!arenaUtil.isPlaying(player)) {
-                            p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
-                        }
-                        IArena playerArena = arenaUtil.getArenaByPlayer(player);
-                        int x = player.getLocation().getBlockX();
-                        int y = player.getLocation().getBlockY();
-                        int z = player.getLocation().getBlockZ();
-                        if (player.getWorld().getBlockAt(x,y+2,z).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x, y+2, z).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y+2, z));
-                        }
-                        if (player.getWorld().getBlockAt(x,y-1,z).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x, y-1, z).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y-1, z));
-                        }
-                        if (player.getWorld().getBlockAt(x,y,z+1).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x, y, z+1).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y, z+1));
-                        }
-                        if (player.getWorld().getBlockAt(x,y,z-1).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x, y, z-1).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x,y,z-1));
-                        }
-                        if (player.getWorld().getBlockAt(x+1,y,z).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x+1, y, z).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x+1, y, z));
-                        }
-                        if (player.getWorld().getBlockAt(x-1,y,z).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x-1, y, z).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x-1, y, z));
-                        }
-                        // above layer
-                        if (player.getWorld().getBlockAt(x, y+1, z+1).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x, y+1, z+1).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y+1, z+1));
-                        }
-                        if (player.getWorld().getBlockAt(x, y+1, z-1).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x, y+1, z-1).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y+1, z-1));
-                        }
-                        if (player.getWorld().getBlockAt(x+1, y+1, z).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x+1, y+1, z).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x+1, y+1, z));
-                        }
-                        if (player.getWorld().getBlockAt(x-1, y+1, z).getType() == Material.AIR) {
-                            player.getWorld().getBlockAt(x-1, y+1, z).setType(Material.GLASS);
-                            playerArena.addPlacedBlock(player.getWorld().getBlockAt(x-1, y+1, z));
-                        }
-                        p.sendMessage(ChatColor.LIGHT_PURPLE + "Trapped " + args[1]);
-                        return true;
+                    if (!arenaUtil.isPlaying(player)) {
+                        p.sendMessage(ChatColor.RED + "Player is not playing");
+                        return;
                     }
+                    Location playerLoc = player.getLocation();
+                    playerLoc.setY(playerLoc.getY()+50);
+                    playerLoc.setPitch(90);
+                    playerLoc.setYaw(-90);
+                    player.teleport(playerLoc);
+                    Main.getInstance().mlg.put(player.getName(), player.getItemInHand());
+                    player.setItemInHand(new ItemStack(Material.WATER_BUCKET));
+                    player.sendMessage(ChatColor.AQUA + "MLG TIME!!");
+                    return;
                 }
-                if (args[0].equalsIgnoreCase("blind")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
-                        if (player == null) {
-                            p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
-                        }
-                        if (!arenaUtil.isPlaying(player)) {
-                            p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
-                        }
-                        if (args.length >= 3) {
-                            try {
-                                Integer.parseInt(args[2]);
-                            } catch (NumberFormatException nfe) {
-                                p.sendMessage(ChatColor.RED + "Please enter a number.");
-                                return true;
-                            }
-                            int duration = Integer.parseInt(args[2]);
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration*20, 1));
-                            p.sendMessage(ChatColor.RED + args[1] + " is blinded for " + args[2] + " seconds");
-                            return true;
-                        }
-                    }
-                }
-                if (args[0].equalsIgnoreCase("slowhands")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
-                        if (player == null) {
-                            p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
-                        }
-                        if (!arenaUtil.isPlaying(player)) {
-                            p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
-                        }
-                        if (args.length >= 3) {
-                            try {
-                                Integer.parseInt(args[2]);
-                            } catch (NumberFormatException nfe) {
-                                p.sendMessage(ChatColor.RED + "Please enter a number.");
-                                return true;
-                            }
-                            int duration = Integer.parseInt(args[2]);
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, duration*20, 1));
-                            p.sendMessage(ChatColor.RED + args[1] + " has slowhands for " + args[2] + " seconds");
-                            return true;
-                        }
-                    }
-                }
-                if (args[0].equalsIgnoreCase("kaboom")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
-                        if (player == null) {
-                            p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
-                        }
-                        if (!arenaUtil.isPlaying(player)) {
-                            p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
-                        }
-                        Main.getInstance().kaboom.put(player.getDisplayName(), "true");
-                        Location playerLocation = player.getLocation();
-                        player.setVelocity(new Vector(0, 35, 0));
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        // 1st
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        // 2nd
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        player.getWorld().strikeLightningEffect(playerLocation);
-                        return true;
-                    }
-                }
-                if (args[0].equalsIgnoreCase("toystick")) {
-                    if (args.length >= 2) {
-                        Player player = Bukkit.getPlayerExact(args[1]);
-                        if (player == null) {
-                            p.sendMessage(ChatColor.RED + "Player not found");
-                            return true;
-                        }
-                        if (!arenaUtil.isPlaying(player)) {
-                            p.sendMessage(ChatColor.RED + "Player is not playing");
-                            return true;
-                        }
-                        ItemStack toyStick = new ItemStack(Material.STICK, 1);
-                        toyStick.addUnsafeEnchantment(Enchantment.LURE, 1);
-                        ItemMeta meta = toyStick.getItemMeta();
-                        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&bMagic Toy Stick"));
-                        List<String> loreList = new ArrayList<String>();
-                        loreList.add(ChatColor.translateAlternateColorCodes('&', "&eClick me for an explosion!"));
-                        meta.setLore(loreList);
-                        toyStick.setItemMeta(meta);
-                        player.getInventory().addItem(toyStick);
-                        p.sendMessage(ChatColor.GREEN + "Gave " + args[1] + " a toystick!");
-                        return true;
-                    }
-                }
-                p.sendMessage(ChatColor.RED + "Invalid Usage.");
-                return true;
             }
+            if (args[1].equalsIgnoreCase("cage")) {
+                if (args.length >= 3) {
+                    Player player = Bukkit.getPlayerExact(args[2]);
+                    if (player == null) {
+                        p.sendMessage(ChatColor.RED + "Player not found");
+                        return;
+                    }
+                    if (!arenaUtil.isPlaying(player)) {
+                        p.sendMessage(ChatColor.RED + "Player is not playing");
+                        return;
+                    }
+                    IArena playerArena = arenaUtil.getArenaByPlayer(player);
+                    int x = player.getLocation().getBlockX();
+                    int y = player.getLocation().getBlockY();
+                    int z = player.getLocation().getBlockZ();
+                    if (player.getWorld().getBlockAt(x,y+2,z).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x, y+2, z).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y+2, z));
+                    }
+                    if (player.getWorld().getBlockAt(x,y-1,z).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x, y-1, z).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y-1, z));
+                    }
+                    if (player.getWorld().getBlockAt(x,y,z+1).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x, y, z+1).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y, z+1));
+                    }
+                    if (player.getWorld().getBlockAt(x,y,z-1).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x, y, z-1).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x,y,z-1));
+                    }
+                    if (player.getWorld().getBlockAt(x+1,y,z).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x+1, y, z).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x+1, y, z));
+                    }
+                    if (player.getWorld().getBlockAt(x-1,y,z).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x-1, y, z).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x-1, y, z));
+                    }
+                    // above layer
+                    if (player.getWorld().getBlockAt(x, y+1, z+1).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x, y+1, z+1).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y+1, z+1));
+                    }
+                    if (player.getWorld().getBlockAt(x, y+1, z-1).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x, y+1, z-1).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x, y+1, z-1));
+                    }
+                    if (player.getWorld().getBlockAt(x+1, y+1, z).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x+1, y+1, z).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x+1, y+1, z));
+                    }
+                    if (player.getWorld().getBlockAt(x-1, y+1, z).getType() == Material.AIR) {
+                        player.getWorld().getBlockAt(x-1, y+1, z).setType(Material.GLASS);
+                        playerArena.addPlacedBlock(player.getWorld().getBlockAt(x-1, y+1, z));
+                    }
+                    p.sendMessage(ChatColor.LIGHT_PURPLE + "Trapped " + args[2]);
+                    return;
+                }
+            }
+            if (args[1].equalsIgnoreCase("blind")) {
+                if (args.length >= 3) {
+                    Player player = Bukkit.getPlayerExact(args[2]);
+                    if (player == null) {
+                        p.sendMessage(ChatColor.RED + "Player not found");
+                        return;
+                    }
+                    if (!arenaUtil.isPlaying(player)) {
+                        p.sendMessage(ChatColor.RED + "Player is not playing");
+                        return;
+                    }
+                    if (args.length >= 4) {
+                        try {
+                            Integer.parseInt(args[3]);
+                        } catch (NumberFormatException nfe) {
+                            p.sendMessage(ChatColor.RED + "Please enter a number.");
+                            return;
+                        }
+                        int duration = Integer.parseInt(args[3]);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration*20, 1));
+                        p.sendMessage(ChatColor.RED + args[2] + " is blinded for " + args[3] + " seconds");
+                        return;
+                    }
+                }
+            }
+            if (args[1].equalsIgnoreCase("slowhands")) {
+                if (args.length >= 3) {
+                    Player player = Bukkit.getPlayerExact(args[2]);
+                    if (player == null) {
+                        p.sendMessage(ChatColor.RED + "Player not found");
+                        return;
+                    }
+                    if (!arenaUtil.isPlaying(player)) {
+                        p.sendMessage(ChatColor.RED + "Player is not playing");
+                        return;
+                    }
+                    if (args.length >= 4) {
+                        try {
+                            Integer.parseInt(args[3]);
+                        } catch (NumberFormatException nfe) {
+                            p.sendMessage(ChatColor.RED + "Please enter a number.");
+                            return;
+                        }
+                        int duration = Integer.parseInt(args[3]);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, duration*20, 1));
+                        p.sendMessage(ChatColor.RED + args[2] + " has slowhands for " + args[3] + " seconds");
+                        return;
+                    }
+                }
+            }
+            if (args[1].equalsIgnoreCase("kaboom")) {
+                if (args.length >= 3) {
+                    Player player = Bukkit.getPlayerExact(args[2]);
+                    if (player == null) {
+                        p.sendMessage(ChatColor.RED + "Player not found");
+                        return;
+                    }
+                    if (!arenaUtil.isPlaying(player)) {
+                        p.sendMessage(ChatColor.RED + "Player is not playing");
+                        return;
+                    }
+                    Main.getInstance().kaboom.put(player.getDisplayName(), "true");
+                    Location playerLocation = player.getLocation();
+                    player.setVelocity(new Vector(0, 35, 0));
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    // 1st
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    // 2nd
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    player.getWorld().strikeLightningEffect(playerLocation);
+                    return;
+                }
+            }
+            if (args[1].equalsIgnoreCase("ghast")) {
+                if (args.length >= 3) {
+                    Player player = Bukkit.getPlayerExact(args[2]);
+                    if (player == null) {
+                        p.sendMessage(ChatColor.RED + "Player not found");
+                        return;
+                    }
+                    if (!arenaUtil.isPlaying(player)) {
+                        p.sendMessage(ChatColor.RED + "Player is not playing");
+                        return;
+                    }
+                    player.getWorld().setGameRuleValue("doFireTick", "false");
+                    player.getWorld().setGameRuleValue("doMobLoot", "false");
+                    player.getWorld().spawnEntity(player.getLocation(), EntityType.GHAST);
+                    p.sendMessage(ChatColor.RED + "Summoned Ghast at " + args[2]);
+                    return;
+                }
+            }
+            if (args[1].equalsIgnoreCase("mobattack")) {
+                if (args.length >= 3) {
+                    Player player = Bukkit.getPlayerExact(args[2]);
+                    if (player == null) {
+                        p.sendMessage(ChatColor.RED + "Player not found");
+                        return;
+                    }
+                    if (!arenaUtil.isPlaying(player)) {
+                        p.sendMessage(ChatColor.RED + "Player is not playing");
+                        return;
+                    }
+                    // 1st zombie
+                    player.getWorld().setGameRuleValue("doMobLoot", "false");
+                    Entity zombie = player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+                    LivingEntity livingZombie = (LivingEntity) zombie;
+                    livingZombie.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                    livingZombie.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                    livingZombie.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                    livingZombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                    livingZombie.getEquipment().setHelmetDropChance(0);
+                    livingZombie.getEquipment().setChestplateDropChance(0);
+                    livingZombie.getEquipment().setLeggingsDropChance(0);
+                    livingZombie.getEquipment().setBootsDropChance(0);
+                    livingZombie.setCustomName(ChatColor.RED + player.getName() + "'s Enemy!");
+                    // 2nd zombie
+                    Entity zombie1 = player.getWorld().spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+                    LivingEntity livingZombie1 = (LivingEntity) zombie1;
+                    livingZombie1.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                    livingZombie1.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                    livingZombie1.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                    livingZombie1.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                    livingZombie1.getEquipment().setHelmetDropChance(0);
+                    livingZombie1.getEquipment().setChestplateDropChance(0);
+                    livingZombie1.getEquipment().setLeggingsDropChance(0);
+                    livingZombie1.getEquipment().setBootsDropChance(0);
+                    livingZombie1.setCustomName(ChatColor.RED + player.getName() + "'s Enemy!");
+                    // 1st skeleton
+                    Entity skeleton = player.getWorld().spawnEntity(player.getLocation(), EntityType.SKELETON);
+                    LivingEntity livingSkeleton = (LivingEntity) skeleton;
+                    livingSkeleton.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                    livingSkeleton.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                    livingSkeleton.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                    livingSkeleton.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                    livingSkeleton.getEquipment().setHelmetDropChance(0);
+                    livingSkeleton.getEquipment().setChestplateDropChance(0);
+                    livingSkeleton.getEquipment().setLeggingsDropChance(0);
+                    livingSkeleton.getEquipment().setBootsDropChance(0);
+                    livingSkeleton.setCustomName(ChatColor.RED + player.getName() + "'s Enemy!");
+                    // 2nd skeleton
+                    Entity skeleton1 = player.getWorld().spawnEntity(player.getLocation(), EntityType.SKELETON);
+                    LivingEntity livingSkeleton1 = (LivingEntity) skeleton1;
+                    livingSkeleton1.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                    livingSkeleton1.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                    livingSkeleton1.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                    livingSkeleton1.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                    livingSkeleton1.getEquipment().setHelmetDropChance(0);
+                    livingSkeleton1.getEquipment().setChestplateDropChance(0);
+                    livingSkeleton1.getEquipment().setLeggingsDropChance(0);
+                    livingSkeleton1.getEquipment().setBootsDropChance(0);
+                    livingSkeleton1.setCustomName(ChatColor.RED + player.getName() + "'s Enemy!");
+                    // done
+                    p.sendMessage(ChatColor.RED + "Summoned Zombies & Skeletons at " + args[2]);
+                    return;
+                }
+            }
+            if (args[1].equalsIgnoreCase("toystick")) {
+                if (args.length >= 3) {
+                    Player player = Bukkit.getPlayerExact(args[2]);
+                    if (player == null) {
+                        p.sendMessage(ChatColor.RED + "Player not found");
+                        return;
+                    }
+                    if (!arenaUtil.isPlaying(player)) {
+                        p.sendMessage(ChatColor.RED + "Player is not playing");
+                        return;
+                    }
+                    ItemStack toyStick = new ItemStack(Material.STICK, 1);
+                    toyStick.addUnsafeEnchantment(Enchantment.LURE, 1);
+                    ItemMeta meta = toyStick.getItemMeta();
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&bMagic Toy Stick"));
+                    List<String> loreList = new ArrayList<String>();
+                    loreList.add(ChatColor.translateAlternateColorCodes('&', "&eClick me for an explosion!"));
+                    meta.setLore(loreList);
+                    toyStick.setItemMeta(meta);
+                    player.getInventory().addItem(toyStick);
+                    p.sendMessage(ChatColor.GREEN + "Gave " + args[2] + " a toystick!");
+                    return;
+                }
+            }
+            if (args[1].equalsIgnoreCase("mlg") || args[1].equalsIgnoreCase("cage") || args[1].equalsIgnoreCase("kaboom") || args[1].equalsIgnoreCase("toystick") || args[1].equalsIgnoreCase("ghast") || args[1].equalsIgnoreCase("mobattack")) {
+                p.sendMessage(ChatColor.RED + "Usage: /bwa troll " + args[1].toLowerCase() + " <player>");
+                return;
+            } else if (args[1].equalsIgnoreCase("blind") || args[1].equalsIgnoreCase("slowhands")) {
+                p.sendMessage(ChatColor.RED + "Usage: /bwa troll " + args[1].toLowerCase() + " <player> <seconds>");
+                return;
+            }
+            p.sendMessage(ChatColor.RED + "Unknown troll command.");
         }
-        return true;
     }
-
-
-    @Override
-    public List<String> getTabComplete() {
-        return Arrays.asList("mlg", "cage", "blind", "slowhands", "kaboom", "toystick");
-    }
-
 }
