@@ -20,10 +20,11 @@ public class AdminTabCompleter implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (command.getName().equalsIgnoreCase("bwa")) {
         if (args.length == 1) {
-            return Arrays.asList("help", "forcejoin", "setteam", "revive", "setbed", "skipevent", "nextevent", "troll");
+            // "revive",
+            return Arrays.asList("help", "forcejoin", "setteam", "setbed", "skipevent", "nextevent", "troll");
         }
         if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("forcejoin") || args[0].equalsIgnoreCase("setteam") || args[0].equalsIgnoreCase("revive") || args[0].equalsIgnoreCase("setbed")) {
+            if (args[0].equalsIgnoreCase("forcejoin") || args[0].equalsIgnoreCase("setteam") || args[0].equalsIgnoreCase("setbed")) {
                 List<String> playerNames = new ArrayList<>();
                 Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
                 Bukkit.getServer().getOnlinePlayers().toArray(players);
@@ -46,16 +47,23 @@ public class AdminTabCompleter implements TabCompleter {
         if (args.length == 3) {
             if (args[0].equalsIgnoreCase("forcejoin")) {
                 List<String> arenaNames = new ArrayList<>();
-                IArena[] arenas = new IArena[Main.getInstance().bw.getArenaUtil().getArenas().size()];
-                Main.getInstance().bw.getArenaUtil().getArenas().toArray(arenas);
-                for (int i = 0; i < arenas.length; i++) {
-                    arenaNames.add(arenas[i].getArenaName());
+                List arenaGroupsList = Main.bw.getConfigs().getMainConfig().getYml().getStringList(".arenaGroups");
+                String[] arenaGroups = new String[arenaGroupsList.size()];
+                arenaGroupsList.toArray(arenaGroups);
+                for (int h = 0; h < arenaGroupsList.size(); h++) {
+                    arenaNames.add(arenaGroups[h]);
                 }
-                return arenaNames;
+                    IArena[] arenas = new IArena[Main.getInstance().bw.getArenaUtil().getArenas().size()];
+                    Main.getInstance().bw.getArenaUtil().getArenas().toArray(arenas);
+
+                    for (int i = 0; i < arenas.length; i++) {
+                        arenaNames.add(arenas[i].getArenaName());
+                    }
+                    return arenaNames;
             }
-            if (args[0].equalsIgnoreCase("revive")) {
-                return Arrays.asList("final", "bed");
-            }
+//            if (args[0].equalsIgnoreCase("revive")) {
+//                return Arrays.asList("final", "bed");
+//            }
             if (args[0].equalsIgnoreCase("setbed")) {
                 return Arrays.asList("true", "false");
             }

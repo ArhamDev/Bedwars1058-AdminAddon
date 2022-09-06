@@ -32,6 +32,10 @@ public class skipevent{
                     } else if (arena.getNextEvent().equals(NextEvent.EMERALD_GENERATOR_TIER_III)) {
                         arena.setNextEvent(NextEvent.BEDS_DESTROY);
                     } else if (arena.getNextEvent().equals(NextEvent.BEDS_DESTROY)) {
+                        for (int i = 0; i < arena.getTeams().size(); i++) {
+                            if (!arena.getTeams().get(i).isBedDestroyed())
+                                arena.getTeams().get(i).setBedDestroyed(true);
+                        }
                         arena.setNextEvent(NextEvent.ENDER_DRAGON);
                     } else if (arena.getNextEvent().equals(NextEvent.ENDER_DRAGON)) {
                         arena.setNextEvent(NextEvent.GAME_END);

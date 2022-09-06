@@ -106,6 +106,42 @@ public class troll{
                             playerArena.addPlacedBlock(player.getWorld().getBlockAt(x-1, y+1, z));
                         }
                         p.sendMessage(ChatColor.LIGHT_PURPLE + "Trapped " + args[2]);
+                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
+                            @Override
+                            public void run() {
+                                if (player.getWorld().getBlockAt(x,y+2,z).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x, y+2, z).setType(Material.AIR);
+                                }
+                                if (player.getWorld().getBlockAt(x,y-1,z).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x, y-1, z).setType(Material.AIR);
+                                }
+                                if (player.getWorld().getBlockAt(x,y,z+1).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x, y, z+1).setType(Material.AIR);
+                                }
+                                if (player.getWorld().getBlockAt(x,y,z-1).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x, y, z-1).setType(Material.AIR);
+                                }
+                                if (player.getWorld().getBlockAt(x+1,y,z).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x+1, y, z).setType(Material.AIR);
+                                }
+                                if (player.getWorld().getBlockAt(x-1,y,z).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x-1, y, z).setType(Material.AIR);
+                                }
+                                // above layer
+                                if (player.getWorld().getBlockAt(x, y+1, z+1).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x, y+1, z+1).setType(Material.AIR);
+                                }
+                                if (player.getWorld().getBlockAt(x, y+1, z-1).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x, y+1, z-1).setType(Material.AIR);
+                                }
+                                if (player.getWorld().getBlockAt(x+1, y+1, z).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x+1, y+1, z).setType(Material.AIR);
+                                }
+                                if (player.getWorld().getBlockAt(x-1, y+1, z).getType() == Material.GLASS) {
+                                    player.getWorld().getBlockAt(x-1, y+1, z).setType(Material.AIR);
+                                }
+                            }
+                        }, 1200L);
                         return;
                     }
                 }
@@ -387,6 +423,42 @@ public class troll{
                         playerArena.addPlacedBlock(player.getWorld().getBlockAt(x-1, y+1, z));
                     }
                     p.sendMessage(ChatColor.LIGHT_PURPLE + "Trapped " + args[2]);
+                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
+                        @Override
+                        public void run() {
+                            if (player.getWorld().getBlockAt(x,y+2,z).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x, y+2, z).setType(Material.AIR);
+                            }
+                            if (player.getWorld().getBlockAt(x,y-1,z).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x, y-1, z).setType(Material.AIR);
+                            }
+                            if (player.getWorld().getBlockAt(x,y,z+1).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x, y, z+1).setType(Material.AIR);
+                            }
+                            if (player.getWorld().getBlockAt(x,y,z-1).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x, y, z-1).setType(Material.AIR);
+                            }
+                            if (player.getWorld().getBlockAt(x+1,y,z).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x+1, y, z).setType(Material.AIR);
+                            }
+                            if (player.getWorld().getBlockAt(x-1,y,z).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x-1, y, z).setType(Material.AIR);
+                            }
+                            // above layer
+                            if (player.getWorld().getBlockAt(x, y+1, z+1).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x, y+1, z+1).setType(Material.AIR);
+                            }
+                            if (player.getWorld().getBlockAt(x, y+1, z-1).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x, y+1, z-1).setType(Material.AIR);
+                            }
+                            if (player.getWorld().getBlockAt(x+1, y+1, z).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x+1, y+1, z).setType(Material.AIR);
+                            }
+                            if (player.getWorld().getBlockAt(x-1, y+1, z).getType() == Material.GLASS) {
+                                player.getWorld().getBlockAt(x-1, y+1, z).setType(Material.AIR);
+                            }
+                        }
+                    }, 1200L);
                     return;
                 }
             }

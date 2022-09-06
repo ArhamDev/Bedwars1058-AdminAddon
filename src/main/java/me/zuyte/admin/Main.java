@@ -4,6 +4,7 @@ import com.andrei1058.bedwars.api.BedWars;
 import com.andrei1058.bedwars.api.configuration.ConfigManager;
 import me.zuyte.admin.commands.*;
 import me.zuyte.admin.events.*;
+import me.zuyte.admin.proxy.AdminCommandProxy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.BlockFace;
@@ -27,18 +28,21 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         if (Bukkit.getPluginManager().getPlugin("BedWars1058") != null) {
-            instance = this;
 //            cfg = new ConfigManager(this, "config", "plugins/BedWars1058/Addons/AdminAddon");
 //            setupConfig();
             getLogger().info(ChatColor.translateAlternateColorCodes('&',"&fFound Bedwars1058 & hooked into."));
             setup();
+        } else if (Bukkit.getPluginManager().getPlugin("BedWarsProxy") != null) {
+            getLogger().info(ChatColor.translateAlternateColorCodes('&', "&fFound Bedwars1058 Proxy & hooked into."));
+            setupProxy();
         } else {
-            getLogger().severe("BedWars1058 was not found. Disabling...");
+            getLogger().severe("BedWars1058 plugin was not found. Disabling...");
             Bukkit.getPluginManager().disablePlugin(this);
         }
     }
 
     private void setup() {
+        instance = this;
         version = getDescription().getVersion();
         bw = Bukkit.getServicesManager().getRegistration(BedWars.class).getProvider();
         new admin(bw.getBedWarsCommand(), "admin");
@@ -59,6 +63,14 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityDamage(), this);
         getServer().getPluginManager().registerEvents(new ClickEvent(), this);
         getServer().getPluginManager().registerEvents(new GUIListener() , this);
+        getLogger().info(ChatColor.translateAlternateColorCodes('&',"&aRunning Bedwars1058-AdminAddon &fv" + getDescription().getVersion() + " &7- &eBy Zuyte"));
+    }
+
+    private void setupProxy() {
+        instance = this;
+        version = getDescription().getVersion();
+        getCommand("bwa").setExecutor(new AdminCommandProxy());
+        getCommand("bwa").setTabCompleter(new AdminTabCompleter());
         getLogger().info(ChatColor.translateAlternateColorCodes('&',"&aRunning Bedwars1058-AdminAddon &fv" + getDescription().getVersion() + " &7- &eBy Zuyte"));
     }
 
